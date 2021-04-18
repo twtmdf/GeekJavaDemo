@@ -40,7 +40,16 @@ public class SpringDemo01 {
         class1.dong();
     
         System.out.println("   context.getBeanDefinitionNames() ===>> "+ String.join(",", context.getBeanDefinitionNames()));
-        
+
+//        Component
+//      Autowired
+        BeanTest1 beanTest1 = (BeanTest1) context.getBean("beanTest1");
+        System.out.println("Autowired ="+beanTest1.getStudentName());
+//        @Bean方式
+        System.out.println("@Bean test1 ="+beanTest1.getStudent101Name());
+        Student student101 = (Student) context.getBean("student101");
+        System.out.println("@Bean test2 ="+student101.getName());
+//      xml方式老师已实现
 
     }
 }
