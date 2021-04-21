@@ -73,6 +73,7 @@ public class ConcurrentPackageTest {
         linkedHashMap1.get("k2");
         linkedHashMap1.get("k1");
         System.out.println("accessOrder true 读取顺序 ="+linkedHashMap1);
+//        红黑树，用于实现一致性hash
         TreeMap<String,Integer> treeMap = new TreeMap();
         treeMap.put("k",3);
 //     ConcurrentHashMap, initial capacity is 16
