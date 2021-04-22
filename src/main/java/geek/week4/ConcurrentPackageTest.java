@@ -1,8 +1,7 @@
 package geek.week4;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.*;
 
 public class ConcurrentPackageTest {
 
@@ -112,5 +111,20 @@ public class ConcurrentPackageTest {
         CopyOnWriteArrayList arrayList = new CopyOnWriteArrayList();
         arrayList.add(9);
         arrayList.get(0);
+//      链表实现的有界阻塞队列，wait-notify机制，默认非公平锁
+        LinkedBlockingQueue linkedBlockingQueue = new LinkedBlockingQueue();
+        try {
+            linkedBlockingQueue.put(1);
+            linkedBlockingQueue.take();
+        } catch (Exception e) {
+
+        }
+//        数组实现，插入取出使用同一把锁，公平锁|非公平锁
+        ArrayBlockingQueue arrayBlockingQueue = new ArrayBlockingQueue(10,Boolean.TRUE);
+//      延时队列，使用优先级队列，总是判断队首的元素是否到期
+//        DelayQueue = BlockingQueue +PriorityQueue + Delayed
+        DelayQueue delayQueue = new DelayQueue();
+//      没有容量，使用stack和queue实现公平和非公平策略
+        SynchronousQueue synchronousQueue = new SynchronousQueue();
     }
 }
