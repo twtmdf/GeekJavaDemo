@@ -1,6 +1,7 @@
 题：基于电商交易场景（用户、商品、订单），设计一套简单的表结构
 参考：https://github.com/macrozheng/mall
 # 表公共字段
+version
 trace_id
 create_time
 modify_time
@@ -30,6 +31,7 @@ CREATE TABLE `customer` (
 `trace_id` varchar(50) DEFAULT NULL COMMENT '调用链id',
 `server` varchar(20) DEFAULT NULL COMMENT 'server信息',
 `client` varchar(20) DEFAULT NULL COMMENT 'client信息',
+`version` int(10) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `idx_phone` (`phone`),
 KEY `idx_mail` (`mail`),
@@ -49,6 +51,7 @@ CREATE TABLE `user` (
 `trace_id` varchar(50) DEFAULT NULL COMMENT '调用链id',
 `server` varchar(20) DEFAULT NULL COMMENT 'server信息',
 `client` varchar(20) DEFAULT NULL COMMENT 'client信息',
+`version` int(10) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `idx_customer_id` (`fk_customer_id`),
 KEY `idx_device_id` (`fk_device_id`),
@@ -74,6 +77,7 @@ CREATE TABLE `user_auth` (
 `trace_id` varchar(50) DEFAULT NULL COMMENT '调用链id',
 `server` varchar(20) DEFAULT NULL COMMENT 'server信息',
 `client` varchar(20) DEFAULT NULL COMMENT 'client信息',
+`version` int(10) NOT NULL,
 UNIQUE KEY `idx_user_name` (`user_name`),
 KEY `idx_type` (`type`),
 KEY `idx_user_id` (`user_id`),
@@ -106,6 +110,7 @@ CREATE TABLE `product_info` (
   `trace_id` varchar(50) DEFAULT NULL COMMENT '调用链id',
   `server` varchar(20) DEFAULT NULL COMMENT 'server信息',
   `client` varchar(20) DEFAULT NULL COMMENT 'client信息',
+  `version` int(10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_code` (`code`),
   KEY `idx_state` (`state`),
@@ -137,6 +142,7 @@ CREATE TABLE `commodity` (
  `trace_id` varchar(50) DEFAULT NULL COMMENT '调用链id',
  `server` varchar(20) DEFAULT NULL COMMENT 'server信息',
  `client` varchar(20) DEFAULT NULL COMMENT 'client信息',PRIMARY KEY (`id`),
+ `version` int(10) NOT NULL,
 KEY `idx_product_id` (`fk_product_id`),
 KEY `idx_specs_type_id` (`fk_specs_type_id`),
 KEY `idx_skuid` (`fk_skuid`),
@@ -151,7 +157,7 @@ KEY `idx_update_id` (`fk_update_id`)
 ```
 -- DROP TABLE IF EXISTS `order_info`;
 CREATE TABLE `order_info` (
-  `id` varchar(50) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `fk_user_id` bigint(20) NOT NULL COMMENT '用户标识',
   `fk_user_account_id` bigint(20) NOT NULL COMMENT '用户账户标识',
   `currency` varchar(50) DEFAULT NULL COMMENT '货币',
@@ -163,13 +169,14 @@ CREATE TABLE `order_info` (
   `fk_pay_channel_id` varchar(50) DEFAULT NULL COMMENT '支付渠道',
   `fk_pay_seq` varchar(50) DEFAULT NULL COMMENT '交易流水号',
   `state` tinyint(3) NOT NULL DEFAULT '0' COMMENT '状态, 0.新建/1.下单成功/2.已支付/3.过期未支付',
-  `pay_time` datetime NOT NULL COMMENT '支付时间',
+  `pay_time` datetime DEFAULT NULL COMMENT '支付时间',
   `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已删除 0:未删除/1:已删除',
  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
  `trace_id` varchar(50) DEFAULT NULL COMMENT '调用链id',
  `server` varchar(20) DEFAULT NULL COMMENT 'server信息',
  `client` varchar(20) DEFAULT NULL COMMENT 'client信息',
+ `version` int(10) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_pay_seq` (`fk_pay_seq`) USING BTREE,
   KEY `idx_user_account_id` (`fk_user_account_id`) USING BTREE,
@@ -193,6 +200,7 @@ CREATE TABLE `order_iterm_info` (
  `trace_id` varchar(50) DEFAULT NULL COMMENT '调用链id',
  `server` varchar(20) DEFAULT NULL COMMENT 'server信息',
  `client` varchar(20) DEFAULT NULL COMMENT 'client信息',
+ `version` int(10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_order_id` (`fk_order_id`) USING BTREE,
   KEY `idx_commodity_id` (`fk_commodity_id`)  USING BTREE
