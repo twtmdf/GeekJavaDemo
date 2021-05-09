@@ -33,8 +33,17 @@ public class MultiDataSourceAspect {
 //        DataSourceTypeHolder.set(DataSourceType.OFFLINE);
 //    }
 
+
+    @Before("execution(* io.xuy.dds.sd.service.*.*(..))")
+    public void shardingJDBCDataSource(JoinPoint joinPoint) throws Throwable {
+        log.debug("use sharding data source");
+        DataSourceTypeHolder.set(MultipleDateSourceConfig.SHARDING_JDBC);
+    }
+
     @After("execution(* io.xuy.dds.publish.service.*.*(..)) ||" +
-           "execution(* io.xuy.dds.publish.slave.service.*.*(..))")
+           "execution(* io.xuy.dds.publish.slave.service.*.*(..)) ||" +
+           "execution(* io.xuy.dds.sd.service.*.*(..))"
+    )
     public void removeHolder(JoinPoint joinPoint) throws Throwable {
         log.debug("remove data source");
         DataSourceTypeHolder.remove();

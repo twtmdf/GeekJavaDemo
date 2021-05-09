@@ -2,6 +2,7 @@ package io.xuy.dds.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -19,6 +20,7 @@ public class MultipleDateSourceConfig {
     public static final String OFFLINE = "OFFLINE";
     public static final String PUBLISH = "PUBLISH";
     public static final String PUBLISH_SLAVE = "PUBLISH_SLAVE";
+    public static final String SHARDING_JDBC= "SHARDING_JDBC";
     /**
      * 发布库主库(写库)
      * @return
@@ -48,13 +50,17 @@ public class MultipleDateSourceConfig {
     public DataSource createofflineDataSource(){
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
+
+    @Autowired
+    public DataSource dataSource;
+
     /**
      * 设置动态数据源，通过@Primary 来确定主DataSource
      * @return
      */
-    @Bean("dataSource")
+    @Bean("dyDataSource")
     @Primary
-    public DataSource createDynamicdataSource(@Qualifier("dataSourcePublish") DataSource master, @Qualifier("dataSourcePublishSlave") DataSource slave, @Qualifier("dataSourceOffline") DataSource offline){
+    public DataSource createDynamicdataSource(@Qualifier("dataSourcePublish") DataSource master, @Qualifier("dataSourcePublishSlave") DataSource slave, @Qualifier("dataSourceOffline") DataSource offline, @Qualifier("dataSource") DataSource dataSource){
         RountingMultiDataSource dynamicDataSource = new RountingMultiDataSource();
         //设置默认数据源
         dynamicDataSource.setDefaultTargetDataSource(offline);
@@ -63,7 +69,9 @@ public class MultipleDateSourceConfig {
         map.put(PUBLISH,master);
         map.put(PUBLISH_SLAVE,slave);
         map.put(OFFLINE,offline);
+        map.put(SHARDING_JDBC,dataSource);
         dynamicDataSource.setTargetDataSources(map);
         return  dynamicDataSource;
     }
+
 }

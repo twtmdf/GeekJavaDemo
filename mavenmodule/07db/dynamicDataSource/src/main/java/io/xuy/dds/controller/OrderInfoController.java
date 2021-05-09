@@ -21,14 +21,16 @@ import java.util.UUID;
 @RequestMapping("/order-info")
 public class OrderInfoController {
     @Autowired
-    @Qualifier("offlineOrderInfoService")
     private OrderInfoService offlineOrderInfoService;
 
-        @Autowired
+    @Autowired
     private io.xuy.dds.publish.service.OrderInfoService publishOrderInfoService;
 
     @Autowired
     private io.xuy.dds.publish.slave.service.OrderInfoService publishSlaveOrderInfoService;
+
+    @Autowired
+    private io.xuy.dds.sd.service.OrderInfoService orderInfoService;
 
     @GetMapping(value = "/from/slave")
     public void getFromSlave() {
@@ -59,5 +61,26 @@ public class OrderInfoController {
                 .paySeq(UUID.randomUUID().toString())
                 .build();
         offlineOrderInfoService.save(orderInfo);
+    }
+
+    @GetMapping(value = "/from/sd/slave")
+    public void getFromSdSlave() {
+        Optional<OrderInfo> orderInfoOp = orderInfoService.findById(1L);
+        orderInfoOp.ifPresent(orderInfo -> log.info(orderInfo.getUserId().toString()));
+    }
+
+    @PostMapping(value = "/to/sd/master")
+    public void saveToSdMaster() {
+        OrderInfo orderInfo = OrderInfo.builder()
+                .userId(3L)
+                .state(OrderState.NEWS)
+                .discountAmount(new BigDecimal(1))
+                .shippingAmount(new BigDecimal(51))
+                .totalAmount(new BigDecimal(50))
+                .currency("RMB")
+                .userAccountId(1L)
+                .paySeq(UUID.randomUUID().toString())
+                .build();
+        orderInfoService.save(orderInfo);
     }
 }
