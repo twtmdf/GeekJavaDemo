@@ -1,7 +1,6 @@
 package geek.week6;
 
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -9,6 +8,11 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * 为基于es的游标查询提供通用查询工具，方便业务方调用
+ * @param <T>
+ * @param <E>
+ */
 public class ScrollQueryFunction<T,E> {
     /**
      * 游标查询有效期
