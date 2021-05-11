@@ -1,10 +1,12 @@
 package geek.week6;
 
-import java.net.CacheRequest;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
+/**
+ * 参考链接：前面Lambda、函数式编程讲的很好，后面一般：https://segmentfault.com/a/1190000022887572
+ */
 public class ScrollQueryFunctionTest {
     private List<Long> fromDB = new ArrayList<>();
 
@@ -13,8 +15,8 @@ public class ScrollQueryFunctionTest {
              scrollId = "0";
         }
         int nextScrollId = Integer.valueOf(scrollId) +1;
-        int start = Integer.valueOf(scrollId)*condition.size;
-        int end = Integer.valueOf(nextScrollId)*condition.size;
+        int start = Integer.valueOf(scrollId)*condition.getSize();
+        int end = Integer.valueOf(nextScrollId)*condition.getSize();
         PageDTO<Long> pageDTO = new PageDTO<>();
         if (start > fromDB.size()) {
             return pageDTO;
@@ -48,6 +50,12 @@ public class ScrollQueryFunctionTest {
             System.out.println(e);
         }
 
+//        stream
+        Stream<PageDTO<Long>> subprogramContentPageDTOStream = ScrollQueryStream.scrollQueryAsStream(pageDto -> test.getNumberFromDB(condition,  pageDto.getScrollId(), 10L));
+        subprogramContentPageDTOStream.forEach(pageDto -> {
+            System.out.println("处理数据业务逻辑="+pageDto.toString());
+        });
+
     }
 
     public Boolean bussinessMethod(PageDTO pageDTO) {
@@ -57,7 +65,7 @@ public class ScrollQueryFunctionTest {
 }
 
 class QueryCondition {
-    int size;
+    private int size;
 
     public int getSize() {
         return size;
