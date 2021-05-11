@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 /**
  * 参考链接：前面Lambda、函数式编程讲的很好，后面一般：https://segmentfault.com/a/1190000022887572
+ * stream流实现原理介绍：https://www.cnblogs.com/xiaoxiongcanguan/p/10511233.html
  */
 public class ScrollQueryFunctionTest {
     private List<Long> fromDB = new ArrayList<>();
