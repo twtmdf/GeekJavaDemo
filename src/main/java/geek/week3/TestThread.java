@@ -35,3 +35,26 @@ public class TestThread{
         thread.run();
     }
 }
+
+// 测试线程池的排队和max线程数执行顺序
+//    Runnable task = new Runnable() {
+//        @Override
+//        public void run() {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            Thread t = Thread.currentThread();
+//            System.out.println("当前线程:" + t.getName() + "-" + t.getId());
+//        }
+//    };
+//        try {
+//                ThreadPoolExecutor executor = new ThreadPoolExecutor(1,3,50, TimeUnit.SECONDS,new LinkedBlockingDeque<>(2),new ThreadPoolExecutor.CallerRunsPolicy());
+//        for (int i=0;i<10;i++) {
+//        executor.execute(task);
+//        executor.getActiveCount();
+//        }
+//        }catch (Exception e) {
+//        System.out.println(e);
+//        }
