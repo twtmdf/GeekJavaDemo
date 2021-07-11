@@ -19,4 +19,8 @@ public class KmqConsumer<T> {
         return kmq.poll(timeout);
     }
 
+    public boolean offset(int offset) {
+        return kmq.offset(offset);
+    }
+
 }

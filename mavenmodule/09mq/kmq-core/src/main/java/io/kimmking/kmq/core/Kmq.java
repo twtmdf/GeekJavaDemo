@@ -10,26 +10,32 @@ public final class Kmq {
     public Kmq(String topic, int capacity) {
         this.topic = topic;
         this.capacity = capacity;
-        this.queue = new LinkedBlockingQueue(capacity);
+        this.queue = new SecondQueue();
     }
 
     private String topic;
 
     private int capacity;
 
-    private LinkedBlockingQueue<KmqMessage> queue;
+//    private LinkedBlockingQueue<KmqMessage> queue;
+
+    private SecondQueue queue;
 
     public boolean send(KmqMessage message) {
         return queue.offer(message);
     }
 
-    public KmqMessage poll() {
-        return queue.poll();
-    }
+//    public KmqMessage poll() {
+//        return queue.poll();
+//    }
 
     @SneakyThrows
     public KmqMessage poll(long timeout) {
         return queue.poll(timeout, TimeUnit.MILLISECONDS);
     }
 
+    @SneakyThrows
+    public boolean offset(int offset) {
+        return queue.offset(offset);
+    }
 }
