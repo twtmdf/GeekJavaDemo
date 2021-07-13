@@ -1,0 +1,24 @@
+version: '3'
+services:
+    redis1:
+      image: redis:latest
+      container_name: redis1
+      ports:
+        - "6379:6379"
+      volumes:
+        - ./data1:/data
+        - ./redis1.conf:/redis.conf
+        - ./logs/redis1:/logs
+      command: redis-server /redis.conf
+      privileged: true
+    redis2:
+      image: redis:latest
+      container_name: redis2
+      ports:
+        - "6380:6380"
+      volumes:
+        - ./data2:/data
+        - ./redis2.conf:/redis.conf
+        - ./logs/redis2:/logs
+      command: redis-server /redis.conf
+      privileged: true
