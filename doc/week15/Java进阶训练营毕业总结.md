@@ -1,0 +1,14 @@
+# 视频APP后台服务应用
+## 技术体系
+- APP后台整体采用SpringBoot集成Dubbo体系，采用Zookeeper作为服务的注册中心；
+- 采用MySQL，DynamoDB做数据存储；
+- 采用Elasticsearch提供内容查询支持；
+- 采用Redis集群(主从)做分布式缓存，内存缓存集成Caffeine(Guava)；
+- 采用RabbitMQ进行服务间异步消息通知；
+- 日志集成Skywalking；
+- 监控集成Prometheus、Grafana。
+## 解决的问题
+- 服务间超时控制、熔断，限流，使用Bulkhead隔离集成resilience4j；
+- 网关进行请求认证，转发，限流，超时返回；
+- 对数据量较大的表进行分表，集成Sharding-JDBC；
+- 运营数据存进Redis采用定时任务，定时全量、增量刷数据，以及部分通过消息进行通知。
